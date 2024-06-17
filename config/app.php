@@ -1,6 +1,6 @@
 <?php
 
-	const APP_URL="http://localhost:8080/VENTAS-main/";
+	const APP_URL="http://localhost:8080/LaPotranca/";
 	const APP_NAME="Rancho La Potranca";
 	const APP_SESSION_NAME="POS";
 

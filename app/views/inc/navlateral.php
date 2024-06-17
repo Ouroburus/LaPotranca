@@ -45,38 +45,38 @@
 							<i class="fas fa-cash-register fa-fw"></i>
 						</div>
 						<div class="navLateral-body-cr">
-							CAJAS
+							EMPLEADOS
 						</div>
 						<span class="fas fa-chevron-down"></span>
 					</a>
 					<ul class="full-width menu-principal sub-menu-options">
 						<li class="full-width">
-							<a href="<?php echo APP_URL; ?>nuevoCajero/" class="full-width">
+							<a href="<?php echo APP_URL; ?>empleadoNuevo/" class="full-width">
 								<div class="navLateral-body-cl">
 									<i class="fas fa-cash-register fa-fw"></i>
 								</div>
 								<div class="navLateral-body-cr">
-									Nueva caja
+									Nuevo Empleado
 								</div>
 							</a>
 						</li>
 						<li class="full-width">
-							<a href="<?php echo APP_URL; ?>listaCajero/" class="full-width">
+							<a href="<?php echo APP_URL; ?>empleadoLista/" class="full-width">
 								<div class="navLateral-body-cl">
 									<i class="fas fa-clipboard-list fa-fw"></i>
 								</div>
 								<div class="navLateral-body-cr">
-									Lista de cajas
+									Lista de empleados
 								</div>
 							</a>
 						</li>
 						<li class="full-width">
-							<a href="<?php echo APP_URL; ?>buscarCajero/" class="full-width">
+							<a href="<?php echo APP_URL; ?>empleadoBuscar/" class="full-width">
 								<div class="navLateral-body-cl">
 									<i class="fas fa-search fa-fw"></i>
 								</div>
 								<div class="navLateral-body-cr">
-									Buscar caja
+									Buscar empleado
 								</div>
 							</a>
 						</li>

@@ -5,21 +5,21 @@
 
 	class empleadoController extends mainModel{
 
-		/*----------  Controlador registrar cliente  ----------*/
-		public function registrarClienteControlador(){
+		/*----------  Controlador registrar empleado  ----------*/
+		public function registrarempleadoControlador(){
 
 			# Almacenando datos#
-		    $tipo_documento=$this->limpiarCadena($_POST['cliente_tipo_documento']);
-		    $numero_documento=$this->limpiarCadena($_POST['cliente_numero_documento']);
-		    $nombre=$this->limpiarCadena($_POST['cliente_nombre']);
-		    $apellido=$this->limpiarCadena($_POST['cliente_apellido']);
+		    $tipo_documento=$this->limpiarCadena($_POST['empleado_tipo_documento']);
+		    $numero_documento=$this->limpiarCadena($_POST['empleado_numero_documento']);
+		    $nombre=$this->limpiarCadena($_POST['empleado_nombre']);
+		    $apellido=$this->limpiarCadena($_POST['empleado_apellido']);
 
-		    $provincia=$this->limpiarCadena($_POST['cliente_provincia']);
-		    $ciudad=$this->limpiarCadena($_POST['cliente_ciudad']);
-		    $direccion=$this->limpiarCadena($_POST['cliente_direccion']);
+		    $provincia=$this->limpiarCadena($_POST['empleado_provincia']);
+		    $ciudad=$this->limpiarCadena($_POST['empleado_ciudad']);
+		    $direccion=$this->limpiarCadena($_POST['empleado_direccion']);
 
-		    $telefono=$this->limpiarCadena($_POST['cliente_telefono']);
-		    $email=$this->limpiarCadena($_POST['cliente_email']);
+		    $telefono=$this->limpiarCadena($_POST['empleado_telefono']);
+		    $email=$this->limpiarCadena($_POST['empleado_email']);
 
 		    # Verificando campos obligatorios #
             if($numero_documento=="" || $nombre=="" || $apellido=="" || $provincia=="" || $ciudad=="" || $direccion==""){
@@ -128,7 +128,7 @@
 		    # Verificando email #
 		    if($email!=""){
 				if(filter_var($email, FILTER_VALIDATE_EMAIL)){
-					$check_email=$this->ejecutarConsulta("SELECT cliente_email FROM cliente WHERE cliente_email='$email'");
+					$check_email=$this->ejecutarConsulta("SELECT empleado_email FROM empleado WHERE empleado_email='$email'");
 					if($check_email->rowCount()>0){
 						$alerta=[
 							"tipo"=>"simple",
@@ -152,7 +152,7 @@
             }
 
             # Comprobando documento #
-		    $check_documento=$this->ejecutarConsulta("SELECT cliente_id FROM cliente WHERE cliente_tipo_documento='$tipo_documento' AND cliente_numero_documento='$numero_documento'");
+		    $check_documento=$this->ejecutarConsulta("SELECT empleado_id FROM empleado WHERE empleado_tipo_documento='$tipo_documento' AND empleado_numero_documento='$numero_documento'");
 		    if($check_documento->rowCount()>0){
 		    	$alerta=[
 					"tipo"=>"simple",
@@ -165,68 +165,68 @@
 		    }
 
 
-		    $cliente_datos_reg=[
+		    $empleado_datos_reg=[
 				[
-					"campo_nombre"=>"cliente_tipo_documento",
+					"campo_nombre"=>"empleado_tipo_documento",
 					"campo_marcador"=>":TipoDocumento",
 					"campo_valor"=>$tipo_documento
 				],
 				[
-					"campo_nombre"=>"cliente_numero_documento",
+					"campo_nombre"=>"empleado_numero_documento",
 					"campo_marcador"=>":NumeroDocumento",
 					"campo_valor"=>$numero_documento
 				],
 				[
-					"campo_nombre"=>"cliente_nombre",
+					"campo_nombre"=>"empleado_nombre",
 					"campo_marcador"=>":Nombre",
 					"campo_valor"=>$nombre
 				],
 				[
-					"campo_nombre"=>"cliente_apellido",
+					"campo_nombre"=>"empleado_apellido",
 					"campo_marcador"=>":Apellido",
 					"campo_valor"=>$apellido
 				],
 				[
-					"campo_nombre"=>"cliente_provincia",
+					"campo_nombre"=>"empleado_provincia",
 					"campo_marcador"=>":Provincia",
 					"campo_valor"=>$provincia
 				],
 				[
-					"campo_nombre"=>"cliente_ciudad",
+					"campo_nombre"=>"empleado_ciudad",
 					"campo_marcador"=>":Ciudad",
 					"campo_valor"=>$ciudad
 				],
 				[
-					"campo_nombre"=>"cliente_direccion",
+					"campo_nombre"=>"empleado_direccion",
 					"campo_marcador"=>":Direccion",
 					"campo_valor"=>$direccion
 				],
 				[
-					"campo_nombre"=>"cliente_telefono",
+					"campo_nombre"=>"empleado_telefono",
 					"campo_marcador"=>":Telefono",
 					"campo_valor"=>$telefono
 				],
 				[
-					"campo_nombre"=>"cliente_email",
+					"campo_nombre"=>"empleado_email",
 					"campo_marcador"=>":Email",
 					"campo_valor"=>$email
 				]
 			];
 
-			$registrar_cliente=$this->guardarDatos("cliente",$cliente_datos_reg);
+			$registrar_empleado=$this->guardarDatos("empleado",$empleado_datos_reg);
 
-			if($registrar_cliente->rowCount()==1){
+			if($registrar_empleado->rowCount()==1){
 				$alerta=[
 					"tipo"=>"limpiar",
-					"titulo"=>"Cliente registrado",
-					"texto"=>"El cliente ".$nombre." ".$apellido." se registro con exito",
+					"titulo"=>"empleado registrado",
+					"texto"=>"El empleado ".$nombre." ".$apellido." se registro con exito",
 					"icono"=>"success"
 				];
 			}else{
 				$alerta=[
 					"tipo"=>"simple",
 					"titulo"=>"Ocurrió un error inesperado",
-					"texto"=>"No se pudo registrar el cliente, por favor intente nuevamente",
+					"texto"=>"No se pudo registrar el empleado, por favor intente nuevamente",
 					"icono"=>"error"
 				];
 			}
@@ -235,8 +235,8 @@
 		}
 
 
-		/*----------  Controlador listar cliente  ----------*/
-		public function listarClienteControlador($pagina,$registros,$url,$busqueda){
+		/*----------  Controlador listar empleado  ----------*/
+		public function listarempleadoControlador($pagina,$registros,$url,$busqueda){
 
 			$pagina=$this->limpiarCadena($pagina);
 			$registros=$this->limpiarCadena($registros);
@@ -252,15 +252,15 @@
 
 			if(isset($busqueda) && $busqueda!=""){
 
-				$consulta_datos="SELECT * FROM cliente WHERE ((cliente_id!='1') AND (cliente_tipo_documento LIKE '%$busqueda%' OR cliente_numero_documento LIKE '%$busqueda%' OR cliente_nombre LIKE '%$busqueda%' OR cliente_apellido LIKE '%$busqueda%' OR cliente_email LIKE '%$busqueda%' OR cliente_provincia LIKE '%$busqueda%' OR cliente_ciudad LIKE '%$busqueda%')) ORDER BY cliente_nombre ASC LIMIT $inicio,$registros";
+				$consulta_datos="SELECT * FROM empleado WHERE ((empleado_id!='1') AND (empleado_tipo_documento LIKE '%$busqueda%' OR empleado_numero_documento LIKE '%$busqueda%' OR empleado_nombre LIKE '%$busqueda%' OR empleado_apellido LIKE '%$busqueda%' OR empleado_email LIKE '%$busqueda%' OR empleado_provincia LIKE '%$busqueda%' OR empleado_ciudad LIKE '%$busqueda%')) ORDER BY empleado_nombre ASC LIMIT $inicio,$registros";
 
-				$consulta_total="SELECT COUNT(cliente_id) FROM cliente WHERE ((cliente_id!='1') AND (cliente_tipo_documento LIKE '%$busqueda%' OR cliente_numero_documento LIKE '%$busqueda%' OR cliente_nombre LIKE '%$busqueda%' OR cliente_apellido LIKE '%$busqueda%' OR cliente_email LIKE '%$busqueda%' OR cliente_provincia LIKE '%$busqueda%' OR cliente_ciudad LIKE '%$busqueda%'))";
+				$consulta_total="SELECT COUNT(empleado_id) FROM empleado WHERE ((empleado_id!='1') AND (empleado_tipo_documento LIKE '%$busqueda%' OR empleado_numero_documento LIKE '%$busqueda%' OR empleado_nombre LIKE '%$busqueda%' OR empleado_apellido LIKE '%$busqueda%' OR empleado_email LIKE '%$busqueda%' OR empleado_provincia LIKE '%$busqueda%' OR empleado_ciudad LIKE '%$busqueda%'))";
 
 			}else{
 
-				$consulta_datos="SELECT * FROM cliente WHERE cliente_id!='1' ORDER BY cliente_nombre ASC LIMIT $inicio,$registros";
+				$consulta_datos="SELECT * FROM empleado WHERE empleado_id!='1' ORDER BY empleado_nombre ASC LIMIT $inicio,$registros";
 
-				$consulta_total="SELECT COUNT(cliente_id) FROM cliente WHERE cliente_id!='1'";
+				$consulta_total="SELECT COUNT(empleado_id) FROM empleado WHERE empleado_id!='1'";
 
 			}
 
@@ -295,19 +295,19 @@
 					$tabla.='
 						<tr class="has-text-centered" >
 							<td>'.$contador.'</td>
-							<td>'.$rows['cliente_tipo_documento'].': '.$rows['cliente_numero_documento'].'</td>
-							<td>'.$rows['cliente_nombre'].' '.$rows['cliente_apellido'].'</td>
-							<td>'.$rows['cliente_email'].'</td>
+							<td>'.$rows['empleado_tipo_documento'].': '.$rows['empleado_numero_documento'].'</td>
+							<td>'.$rows['empleado_nombre'].' '.$rows['empleado_apellido'].'</td>
+							<td>'.$rows['empleado_email'].'</td>
 			                <td>
-			                    <a href="'.APP_URL.'clientUpdate/'.$rows['cliente_id'].'/" class="button is-success is-rounded is-small">
+			                    <a href="'.APP_URL.'clientUpdate/'.$rows['empleado_id'].'/" class="button is-success is-rounded is-small">
 			                    	<i class="fas fa-sync fa-fw"></i>
 			                    </a>
 			                </td>
 			                <td>
-			                	<form class="FormularioAjax" action="'.APP_URL.'app/ajax/clienteAjax.php" method="POST" autocomplete="off" >
+			                	<form class="FormularioAjax" action="'.APP_URL.'app/ajax/empleadoAjax.php" method="POST" autocomplete="off" >
 
-			                		<input type="hidden" name="modulo_cliente" value="eliminar">
-			                		<input type="hidden" name="cliente_id" value="'.$rows['cliente_id'].'">
+			                		<input type="hidden" name="modulo_empleado" value="eliminar">
+			                		<input type="hidden" name="empleado_id" value="'.$rows['empleado_id'].'">
 
 			                    	<button type="submit" class="button is-danger is-rounded is-small">
 			                    		<i class="far fa-trash-alt fa-fw"></i>
@@ -345,7 +345,7 @@
 
 			### Paginacion ###
 			if($total>0 && $pagina<=$numeroPaginas){
-				$tabla.='<p class="has-text-right">Mostrando clientes <strong>'.$pag_inicio.'</strong> al <strong>'.$pag_final.'</strong> de un <strong>total de '.$total.'</strong></p>';
+				$tabla.='<p class="has-text-right">Mostrando empleados <strong>'.$pag_inicio.'</strong> al <strong>'.$pag_final.'</strong> de un <strong>total de '.$total.'</strong></p>';
 
 				$tabla.=$this->paginadorTablas($pagina,$numeroPaginas,$url,7);
 			}
@@ -354,29 +354,29 @@
 		}
 
 
-		/*----------  Controlador eliminar cliente  ----------*/
-		public function eliminarClienteControlador(){
+		/*----------  Controlador eliminar empleado  ----------*/
+		public function eliminarempleadoControlador(){
 
-			$id=$this->limpiarCadena($_POST['cliente_id']);
+			$id=$this->limpiarCadena($_POST['empleado_id']);
 
 			if($id==1){
 				$alerta=[
 					"tipo"=>"simple",
 					"titulo"=>"Ocurrió un error inesperado",
-					"texto"=>"No podemos eliminar el cliente principal del sistema",
+					"texto"=>"No podemos eliminar el empleado principal del sistema",
 					"icono"=>"error"
 				];
 				return json_encode($alerta);
 		        exit();
 			}
 
-			# Verificando cliente #
-		    $datos=$this->ejecutarConsulta("SELECT * FROM cliente WHERE cliente_id='$id'");
+			# Verificando empleado #
+		    $datos=$this->ejecutarConsulta("SELECT * FROM empleado WHERE empleado_id='$id'");
 		    if($datos->rowCount()<=0){
 		        $alerta=[
 					"tipo"=>"simple",
 					"titulo"=>"Ocurrió un error inesperado",
-					"texto"=>"No hemos encontrado el cliente en el sistema",
+					"texto"=>"No hemos encontrado el empleado en el sistema",
 					"icono"=>"error"
 				];
 				return json_encode($alerta);
@@ -386,26 +386,26 @@
 		    }
 
 		    # Verificando ventas #
-		    $check_ventas=$this->ejecutarConsulta("SELECT cliente_id FROM venta WHERE cliente_id='$id' LIMIT 1");
+		    $check_ventas=$this->ejecutarConsulta("SELECT empleado_id FROM venta WHERE empleado_id='$id' LIMIT 1");
 		    if($check_ventas->rowCount()>0){
 		        $alerta=[
 					"tipo"=>"simple",
 					"titulo"=>"Ocurrió un error inesperado",
-					"texto"=>"No podemos eliminar el cliente del sistema ya que tiene ventas asociadas",
+					"texto"=>"No podemos eliminar el empleado del sistema ya que tiene ventas asociadas",
 					"icono"=>"error"
 				];
 				return json_encode($alerta);
 		        exit();
 		    }
 
-		    $eliminarCliente=$this->eliminarRegistro("cliente","cliente_id",$id);
+		    $eliminarempleado=$this->eliminarRegistro("empleado","empleado_id",$id);
 
-		    if($eliminarCliente->rowCount()==1){
+		    if($eliminarempleado->rowCount()==1){
 
 		        $alerta=[
 					"tipo"=>"recargar",
-					"titulo"=>"Cliente eliminado",
-					"texto"=>"El cliente ".$datos['cliente_nombre']." ".$datos['cliente_apellido']." ha sido eliminado del sistema correctamente",
+					"titulo"=>"empleado eliminado",
+					"texto"=>"El empleado ".$datos['empleado_nombre']." ".$datos['empleado_apellido']." ha sido eliminado del sistema correctamente",
 					"icono"=>"success"
 				];
 
@@ -413,7 +413,7 @@
 		    	$alerta=[
 					"tipo"=>"simple",
 					"titulo"=>"Ocurrió un error inesperado",
-					"texto"=>"No hemos podido eliminar el cliente ".$datos['cliente_nombre']." ".$datos['cliente_apellido']." del sistema, por favor intente nuevamente",
+					"texto"=>"No hemos podido eliminar el empleado ".$datos['empleado_nombre']." ".$datos['empleado_apellido']." del sistema, por favor intente nuevamente",
 					"icono"=>"error"
 				];
 		    }
@@ -422,18 +422,18 @@
 		}
 
 
-		/*----------  Controlador actualizar cliente  ----------*/
-		public function actualizarClienteControlador(){
+		/*----------  Controlador actualizar empleado  ----------*/
+		public function actualizarempleadoControlador(){
 
-			$id=$this->limpiarCadena($_POST['cliente_id']);
+			$id=$this->limpiarCadena($_POST['empleado_id']);
 
-			# Verificando cliente #
-		    $datos=$this->ejecutarConsulta("SELECT * FROM cliente WHERE cliente_id='$id'");
+			# Verificando empleado #
+		    $datos=$this->ejecutarConsulta("SELECT * FROM empleado WHERE empleado_id='$id'");
 		    if($datos->rowCount()<=0){
 		        $alerta=[
 					"tipo"=>"simple",
 					"titulo"=>"Ocurrió un error inesperado",
-					"texto"=>"No hemos encontrado el cliente en el sistema",
+					"texto"=>"No hemos encontrado el empleado en el sistema",
 					"icono"=>"error"
 				];
 				return json_encode($alerta);
@@ -443,17 +443,17 @@
 		    }
 
 		    # Almacenando datos#
-		    $tipo_documento=$this->limpiarCadena($_POST['cliente_tipo_documento']);
-		    $numero_documento=$this->limpiarCadena($_POST['cliente_numero_documento']);
-		    $nombre=$this->limpiarCadena($_POST['cliente_nombre']);
-		    $apellido=$this->limpiarCadena($_POST['cliente_apellido']);
+		    $tipo_documento=$this->limpiarCadena($_POST['empleado_tipo_documento']);
+		    $numero_documento=$this->limpiarCadena($_POST['empleado_numero_documento']);
+		    $nombre=$this->limpiarCadena($_POST['empleado_nombre']);
+		    $apellido=$this->limpiarCadena($_POST['empleado_apellido']);
 
-		    $provincia=$this->limpiarCadena($_POST['cliente_provincia']);
-		    $ciudad=$this->limpiarCadena($_POST['cliente_ciudad']);
-		    $direccion=$this->limpiarCadena($_POST['cliente_direccion']);
+		    $provincia=$this->limpiarCadena($_POST['empleado_provincia']);
+		    $ciudad=$this->limpiarCadena($_POST['empleado_ciudad']);
+		    $direccion=$this->limpiarCadena($_POST['empleado_direccion']);
 
-		    $telefono=$this->limpiarCadena($_POST['cliente_telefono']);
-		    $email=$this->limpiarCadena($_POST['cliente_email']);
+		    $telefono=$this->limpiarCadena($_POST['empleado_telefono']);
+		    $email=$this->limpiarCadena($_POST['empleado_email']);
 
 		    # Verificando campos obligatorios #
             if($numero_documento=="" || $nombre=="" || $apellido=="" || $provincia=="" || $ciudad=="" || $direccion==""){
@@ -560,9 +560,9 @@
 			}
 
 			# Verificando email #
-		    if($email!="" && $datos['cliente_email']!=$email){
+		    if($email!="" && $datos['empleado_email']!=$email){
 				if(filter_var($email, FILTER_VALIDATE_EMAIL)){
-					$check_email=$this->ejecutarConsulta("SELECT cliente_email FROM cliente WHERE cliente_email='$email'");
+					$check_email=$this->ejecutarConsulta("SELECT empleado_email FROM empleado WHERE empleado_email='$email'");
 					if($check_email->rowCount()>0){
 						$alerta=[
 							"tipo"=>"simple",
@@ -586,8 +586,8 @@
             }
 
             # Comprobando documento #
-            if($tipo_documento!=$datos['cliente_tipo_documento'] || $numero_documento!=$datos['cliente_numero_documento']){
-			    $check_documento=$this->ejecutarConsulta("SELECT cliente_id FROM cliente WHERE cliente_tipo_documento='$tipo_documento' AND cliente_numero_documento='$numero_documento'");
+            if($tipo_documento!=$datos['empleado_tipo_documento'] || $numero_documento!=$datos['empleado_numero_documento']){
+			    $check_documento=$this->ejecutarConsulta("SELECT empleado_id FROM empleado WHERE empleado_tipo_documento='$tipo_documento' AND empleado_numero_documento='$numero_documento'");
 			    if($check_documento->rowCount()>0){
 			    	$alerta=[
 						"tipo"=>"simple",
@@ -600,72 +600,72 @@
 			    }
             }
 
-            $cliente_datos_up=[
+            $empleado_datos_up=[
 				[
-					"campo_nombre"=>"cliente_tipo_documento",
+					"campo_nombre"=>"empleado_tipo_documento",
 					"campo_marcador"=>":TipoDocumento",
 					"campo_valor"=>$tipo_documento
 				],
 				[
-					"campo_nombre"=>"cliente_numero_documento",
+					"campo_nombre"=>"empleado_numero_documento",
 					"campo_marcador"=>":NumeroDocumento",
 					"campo_valor"=>$numero_documento
 				],
 				[
-					"campo_nombre"=>"cliente_nombre",
+					"campo_nombre"=>"empleado_nombre",
 					"campo_marcador"=>":Nombre",
 					"campo_valor"=>$nombre
 				],
 				[
-					"campo_nombre"=>"cliente_apellido",
+					"campo_nombre"=>"empleado_apellido",
 					"campo_marcador"=>":Apellido",
 					"campo_valor"=>$apellido
 				],
 				[
-					"campo_nombre"=>"cliente_provincia",
+					"campo_nombre"=>"empleado_provincia",
 					"campo_marcador"=>":Provincia",
 					"campo_valor"=>$provincia
 				],
 				[
-					"campo_nombre"=>"cliente_ciudad",
+					"campo_nombre"=>"empleado_ciudad",
 					"campo_marcador"=>":Ciudad",
 					"campo_valor"=>$ciudad
 				],
 				[
-					"campo_nombre"=>"cliente_direccion",
+					"campo_nombre"=>"empleado_direccion",
 					"campo_marcador"=>":Direccion",
 					"campo_valor"=>$direccion
 				],
 				[
-					"campo_nombre"=>"cliente_telefono",
+					"campo_nombre"=>"empleado_telefono",
 					"campo_marcador"=>":Telefono",
 					"campo_valor"=>$telefono
 				],
 				[
-					"campo_nombre"=>"cliente_email",
+					"campo_nombre"=>"empleado_email",
 					"campo_marcador"=>":Email",
 					"campo_valor"=>$email
 				]
 			];
 
 			$condicion=[
-				"condicion_campo"=>"cliente_id",
+				"condicion_campo"=>"empleado_id",
 				"condicion_marcador"=>":ID",
 				"condicion_valor"=>$id
 			];
 
-			if($this->actualizarDatos("cliente",$cliente_datos_up,$condicion)){
+			if($this->actualizarDatos("empleado",$empleado_datos_up,$condicion)){
 				$alerta=[
 					"tipo"=>"recargar",
-					"titulo"=>"Cliente actualizado",
-					"texto"=>"Los datos del cliente ".$datos['cliente_nombre']." ".$datos['cliente_apellido']." se actualizaron correctamente",
+					"titulo"=>"empleado actualizado",
+					"texto"=>"Los datos del empleado ".$datos['empleado_nombre']." ".$datos['empleado_apellido']." se actualizaron correctamente",
 					"icono"=>"success"
 				];
 			}else{
 				$alerta=[
 					"tipo"=>"simple",
 					"titulo"=>"Ocurrió un error inesperado",
-					"texto"=>"No hemos podido actualizar los datos del cliente ".$datos['cliente_nombre']." ".$datos['cliente_apellido'].", por favor intente nuevamente",
+					"texto"=>"No hemos podido actualizar los datos del empleado ".$datos['empleado_nombre']." ".$datos['empleado_apellido'].", por favor intente nuevamente",
 					"icono"=>"error"
 				];
 			}

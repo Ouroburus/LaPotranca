@@ -8,7 +8,7 @@
 
 	if(isset($_POST['modulo_cliente'])){
 
-		$insCliente = new clientController();
+		$insCliente = new clienteController();
 
 		if($_POST['modulo_cliente']=="registrar"){
 			echo $insCliente->registrarClienteControlador();
